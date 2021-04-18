@@ -29,7 +29,18 @@ client.connect(err => {
     const ReviewCollection = client.db("mobileRepair").collection("reviews");
     const adminCollection = client.db("mobileRepair").collection("admins");
      
-    
+    app.post('/update/:id', (req, res)=>{
+        const id = ObjectID(req.params.id)
+        const data = req.body;
+        orderCollection.findOneAndUpdate({_id:id}, {$set :{status:data.status}})
+        .then(result => {
+            console.log(result)
+            res.send(result);
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    })
     app.post('/isAdmin',(req,res)=>{
         // console.log(req.body.email);
         adminCollection.find({email:req.body.email})
